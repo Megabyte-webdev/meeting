@@ -1,0 +1,14 @@
+POST http://localhost:5000/api/create-meeting HTTP/1.1
+
+###
+GET http://localhost:5000/api/validate/znsv-kp0n-0oae HTTP/1.1
+
+###
+POST http://localhost:5000/api/get-token HTTP/1.1
+Content-Type: application/json
+
+{
+  "participantId": "user_001",
+  "role": "host",
+  "meetingId": "abcd-1234"
+}
