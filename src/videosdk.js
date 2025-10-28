@@ -9,7 +9,7 @@ const { VIDEOSDK_API_KEY, VIDEOSDK_SECRET, VIDEOSDK_BASE_URL } = process.env;
 // Generate a JWT token manually for VideoSDK REST API
 export const generateVideoSDKToken = (participantId, role = "guest") => {
   const permissions =
-    role === "host" ? ["allow_join", "allow_mod"] : ["allow_join"];
+    role === "host" ? ["allow_join", "allow_mod"] : ["ask_join"];
 
   const header = Buffer.from(
     JSON.stringify({ alg: "HS256", typ: "JWT" })
