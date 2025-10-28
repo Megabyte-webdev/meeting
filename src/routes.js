@@ -37,7 +37,7 @@ router.post("/get-token", async (req, res) => {
     if (!participantId)
       return res.status(400).json({ error: "participantId required" });
 
-    const token = generateVideoSDKToken(participantId, role);
+    const token = await generateVideoSDKToken(participantId, role);
     res.json({ token });
   } catch (err) {
     console.log(err);
