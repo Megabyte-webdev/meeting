@@ -23,9 +23,30 @@ router.post("/create-meeting", async (req, res) => {
 router.get("/validate/:id", async (req, res) => {
   try {
     const meeting = await validateMeeting(req.params.id);
-    res.json({ valid: true, data: meeting });
+    return res.json({ valid: true, data: meeting });
   } catch (err) {
-    res.status(404).json({ valid: false, error: err?.message });
+    console.error("Validation error:", err?.response?.data || err?.message);
+
+    let message = "Unknown error occurred";
+
+    const status = err?.response?.status;
+
+    if (status === 404) {
+      message = "Meeting ID does not exist or has expired";
+    } else if (status === 401) {
+      message = "Authentication failed. Invalid VideoSDK credentials.";
+    } else if (status === 400) {
+      message = "Invalid Meeting ID format.";
+    } else if (status === 500) {
+      message = "Video server error. Please try again.";
+    } else {
+      message = "Unable to validate meeting. Please try again.";
+    }
+
+    return res.status(400).json({
+      valid: false,
+      error: message,
+    });
   }
 });
 
