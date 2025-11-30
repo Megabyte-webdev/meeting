@@ -25,7 +25,7 @@ router.get("/validate/:id", async (req, res) => {
     const meeting = await validateMeeting(req.params.id);
     res.json({ valid: true, data: meeting });
   } catch (err) {
-    res.status(404).json({ valid: false, error: "Invalid meeting ID" });
+    res.status(404).json({ valid: false, error: err?.message });
   }
 });
 

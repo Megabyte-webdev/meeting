@@ -12,3 +12,6 @@ Content-Type: application/json
   "role": "host",
   "meetingId": "abcd-1234"
 }
+###
+
+GET http://localhost:5000/api/validate/r6hc-7j4z-mmdg HTTP/1.1
