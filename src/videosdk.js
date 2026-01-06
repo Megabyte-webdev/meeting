@@ -58,3 +58,16 @@ export const validateMeeting = async (meetingId) => {
 
   return response.data;
 };
+
+export const getMeetingRecordings = async (meetingId) => {
+  const token = generateVideoSDKToken("server", "host");
+  const response = await axios.get(`${VIDEOSDK_BASE_URL}/recordings`, {
+    params: { roomId: meetingId },
+    headers: {
+      // ❗ NO "Bearer " prefix
+      Authorization: token,
+    },
+  });
+
+  return response.data;
+};

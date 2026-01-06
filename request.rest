@@ -10,8 +10,7 @@ Content-Type: application/json
 {
   "participantId": "user_001",
   "role": "host",
-  "meetingId": "abcd-1234"
 }
 ###
 
-GET http://localhost:5000/api/validate/r6hc-7j4z-mmdg HTTP/1.1
+GET http://localhost:5000/api/validate/10mt-t95p-vjiq HTTP/1.1

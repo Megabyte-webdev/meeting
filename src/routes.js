@@ -4,6 +4,7 @@ import {
   createMeeting,
   validateMeeting,
   generateVideoSDKToken,
+  getMeetingRecordings,
 } from "./videosdk.js";
 
 const router = express.Router();
@@ -64,6 +65,40 @@ router.post("/get-token", async (req, res) => {
     console.log(err);
 
     res.status(500).json({ error: "Failed to generate token" });
+  }
+});
+
+router.get("/recordings/:meetingId", async (req, res) => {
+  try {
+    const { meetingId } = req.params;
+
+    if (!meetingId) {
+      return res.status(400).json({ error: "meetingId is required" });
+    }
+
+    const recordings = await getMeetingRecordings(meetingId);
+
+    return res.json({
+      meetingId,
+      recordings,
+    });
+  } catch (err) {
+    console.error(
+      "Recording fetch error:",
+      err?.response?.data || err?.message
+    );
+
+    const status = err?.response?.status || 500;
+
+    let message = "Failed to fetch meeting recordings";
+
+    if (status === 404) {
+      message = "No recordings found for this meeting";
+    } else if (status === 401) {
+      message = "Authentication failed. Invalid VideoSDK credentials.";
+    }
+
+    return res.status(status).json({ error: message });
   }
 });
 
