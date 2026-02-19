@@ -8,7 +8,7 @@ const { VIDEOSDK_API_KEY, VIDEOSDK_SECRET, VIDEOSDK_BASE_URL } = process.env;
 // 🔐 Token for REST API calls (server → VideoSDK)
 export const generateVideoSDKToken = (
   participantId = "server",
-  role = "guest"
+  role = "guest",
 ) => {
   const permissions =
     role === "host" ? ["allow_join", "allow_mod"] : ["ask_join"];
@@ -36,7 +36,7 @@ export const createMeeting = async () => {
   const response = await axios.post(
     `${VIDEOSDK_BASE_URL}/rooms`,
     {},
-    { headers: { Authorization: token } }
+    { headers: { Authorization: token } },
   );
 
   return response.data; // { roomId, ... }
@@ -53,7 +53,7 @@ export const validateMeeting = async (meetingId) => {
         // ❗ NO "Bearer " prefix
         Authorization: token,
       },
-    }
+    },
   );
 
   return response.data;
@@ -70,4 +70,36 @@ export const getMeetingRecordings = async (meetingId) => {
   });
 
   return response.data;
+};
+
+// Get all sessions for a meeting
+export const getMeetingSessions = async (meetingId) => {
+  const token = generateVideoSDKToken("server", "host");
+
+  const response = await axios.get(
+    `${VIDEOSDK_BASE_URL}/sessions/?roomId=${meetingId}`,
+    {
+      headers: {
+        Authorization: token, // no "Bearer " prefix
+      },
+    },
+  );
+
+  return response.data; // array of session objects
+};
+
+// Get participants of a meeting
+export const getMeetingParticipants = async (meetingId) => {
+  const token = generateVideoSDKToken("server", "host");
+
+  const response = await axios.get(
+    `${VIDEOSDK_BASE_URL}/rooms/participants/${meetingId}`,
+    {
+      headers: {
+        Authorization: token, // no "Bearer " prefix
+      },
+    },
+  );
+
+  return response.data; // array of participant objects
 };

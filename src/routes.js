@@ -5,6 +5,8 @@ import {
   validateMeeting,
   generateVideoSDKToken,
   getMeetingRecordings,
+  getMeetingParticipants,
+  getMeetingSessions,
 } from "./videosdk.js";
 
 const router = express.Router();
@@ -85,7 +87,7 @@ router.get("/recordings/:meetingId", async (req, res) => {
   } catch (err) {
     console.error(
       "Recording fetch error:",
-      err?.response?.data || err?.message
+      err?.response?.data || err?.message,
     );
 
     const status = err?.response?.status || 500;
@@ -94,6 +96,61 @@ router.get("/recordings/:meetingId", async (req, res) => {
 
     if (status === 404) {
       message = "No recordings found for this meeting";
+    } else if (status === 401) {
+      message = "Authentication failed. Invalid VideoSDK credentials.";
+    }
+
+    return res.status(status).json({ error: message });
+  }
+});
+
+// Get meeting sessions
+router.get("/sessions/:meetingId", async (req, res) => {
+  try {
+    const { meetingId } = req.params;
+
+    if (!meetingId)
+      return res.status(400).json({ error: "meetingId required" });
+
+    const sessions = await getMeetingSessions(meetingId);
+    return res.json({ meetingId, sessions });
+  } catch (err) {
+    console.error("Sessions fetch error:", err?.response?.data || err?.message);
+
+    const status = err?.response?.status || 500;
+    let message = "Failed to fetch meeting sessions";
+
+    if (status === 404) {
+      message = "No sessions found for this meeting";
+    } else if (status === 401) {
+      message = "Authentication failed. Invalid VideoSDK credentials.";
+    }
+
+    return res.status(status).json({ error: message });
+  }
+});
+
+// Get meeting participants
+router.get("/participants/:meetingId", async (req, res) => {
+  try {
+    const { meetingId } = req.params;
+
+    if (!meetingId)
+      return res.status(400).json({ error: "meetingId required" });
+
+    const participants = await getMeetingParticipants(meetingId);
+    return res.json({ meetingId, participants });
+  } catch (err) {
+    console.error(
+      "Participants fetch error:",
+      err?.response?.data || err?.message,
+    );
+
+    const status = err?.response?.status || 500;
+    let message = "Failed to fetch meeting participants";
+
+    if (status === 404) {
+      message = "No participants found for this meeting";
     } else if (status === 401) {
       message = "Authentication failed. Invalid VideoSDK credentials.";
     }

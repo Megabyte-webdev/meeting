@@ -4,13 +4,24 @@ POST http://localhost:5000/api/create-meeting HTTP/1.1
 GET http://localhost:5000/api/validate/znsv-kp0n-0oae HTTP/1.1
 
 ###
+
 POST http://localhost:5000/api/get-token HTTP/1.1
 Content-Type: application/json
 
 {
   "participantId": "user_001",
-  "role": "host",
+  "role": "host"
 }
+
 ###
 
 GET http://localhost:5000/api/validate/10mt-t95p-vjiq HTTP/1.1
+
+
+###
+
+GET http://localhost:5000/api/participants/32rl-pwt4-auin
+
+###
+
+GET http://localhost:5000/api/sessions/32rl-pwt4-auin
