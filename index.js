@@ -6,7 +6,11 @@ import router from "./src/routes.js";
 import "./src/db.js";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: ["https://cloud.defcomm.ng"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(express.json());
 app.use("/api", router);
 
