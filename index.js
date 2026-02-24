@@ -7,7 +7,7 @@ import "./src/db.js";
 
 const app = express();
 app.use(cors({
-  origin: ["https://cloud.defcomm.ng"],
+  origin: ["https://cloud.defcomm.ng", "http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
