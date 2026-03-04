@@ -6,13 +6,21 @@ import router from "./src/routes.js";
 import "./src/db.js";
 
 const app = express();
-// app.use(
-//   cors({
-//     origin: ["https://cloud.defcomm.ng", "http://localhost:1420"],
-//     methods: ["GET", "POST", "PUT", "DELETE"],
-//     credentials: true,
-//   }),
-// );
+// Enable CORS for Tauri app
+app.use(
+  cors({
+    origin: [
+      "https://cloud.defcomm.ng",
+      "http://localhost:1420", // Tauri dev server
+      "http://localhost:5173", // Vite dev server
+      "tauri://localhost", // Tauri production
+      "http://tauri.localhost", // Tauri alternative
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+    optionsSuccessStatus: 200,
+  }),
+);
 app.use(express.json());
 app.use("/api", router);
 
